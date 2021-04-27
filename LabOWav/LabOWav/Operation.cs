@@ -18,15 +18,12 @@ namespace LabOWav
         public static byte[] IntToByteArray(int integer, int bytesCount)
         {
             var result = new byte[bytesCount];
-            while (integer >= (int) Math.Pow(256, bytesCount))
+
+            for (var i = bytesCount - 1; i >= 0; i--)
             {
-                result[result.Length - bytesCount] = (byte) (integer / (int) Math.Pow(256, bytesCount));
-                integer %= (int) Math.Pow(256, bytesCount);
-                bytesCount--;
-                if (bytesCount < 0)
-                {
-                    break;
-                }
+                result[i] = (byte) ((integer % (int) Math.Pow(256, bytesCount - i)) /
+                            (int) Math.Pow(256, bytesCount - i -1));
+                integer -= result[i];
             }
 
             return result;
