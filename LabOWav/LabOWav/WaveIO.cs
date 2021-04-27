@@ -1,6 +1,7 @@
 namespace LabOWav
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Security;
 
@@ -30,12 +31,18 @@ namespace LabOWav
             var sampleRate = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(4)));
             var byteRate = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(4)));
             var blockAlign = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(2)));
-            var bitsPerSample = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(4)));
+            var bitsPerSample = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(2)));
 
             var subchunk2Id = reader.ReadBytes(4);
             var subchunk2Size = Operation.ByteArrayToInt(Operation.ReverseEndian(reader.ReadBytes(4)));
 
-            var data = reader.ReadBytes(subchunk2Size - 8);
+            /*var dataList = new List<byte>();
+            while (reader.PeekChar() != default)
+            {
+                dataList.Add(reader.ReadByte());
+            }*/
+
+            var data = reader.ReadBytes(subchunk2Size);
 
             var resultByteStream =
                 new ByteStream(chunkId, chunkSize, format, subchunk1Id, subchunk1Size, audioFormat, numChannels,
