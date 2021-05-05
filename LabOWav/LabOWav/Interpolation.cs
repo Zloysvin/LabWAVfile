@@ -5,12 +5,12 @@ using System.Text;
 
 namespace LabOWav
 {
-    class Interpolation
+    public class Interpolation
     {
         public Byte[] Execute(byte[] data, double times, int channels)
         {
             var dataConv = ConvertByteToInt(data);
-            double step = 1 / times; //times = 0.35f
+            double step = 1 / times; 
             int[] dataUpdate;
             if (channels == 1)
             {
@@ -86,18 +86,12 @@ namespace LabOWav
 
                 if (counter == 2)
                 {
-                    /*int converted = Convert.ToInt32(hexValue, 16);
+                    int converted = Convert.ToInt32(hexValue, 16);
                     if (converted > 32767)
-                    {
                         dataList.Add(converted - 65536);
-                    }
                     else
                         dataList.Add(converted);
-                        
-                     Оставил как комментарий ибо на сайте написано что семплы в ваве уже храняться как инты от -32768 до 32767. 
-                     Но на всякий пусть тут лучше полежит
-                     */
-                    dataList.Add(Convert.ToInt32(hexValue, 16));
+                    
                     counter = 0;
                     hexValue = "";
                 }
@@ -110,8 +104,25 @@ namespace LabOWav
             for (int i = 0; i < data.Length; i++)
             {
                 string hexValue = data[i].ToString("X");
-                string hex1 = hexValue[0].ToString() + hexValue[1];
-                string hex2 = hexValue[2].ToString() + hexValue[3];
+                string hex1 = "00"; 
+                string hex2 = "00";
+                if (hexValue.Length > 2)
+                {
+                    hex1 = hexValue[0].ToString() + hexValue[1];
+                    if (hexValue.Length == 3)
+                    {
+                        hex2 = hexValue[2].ToString();
+                    }
+                    else if (hexValue.Length == 4)
+                    {
+                        hex2 = hexValue[2].ToString() + hexValue[3];
+                    }
+                }
+                else
+                {
+                    hex1 = hexValue;
+                    hex2 = "00";
+                }
                 dataList.Add(Convert.ToByte(Convert.ToInt32(hex1, 16)));
                 dataList.Add(Convert.ToByte(Convert.ToInt32(hex2, 16)));
             }

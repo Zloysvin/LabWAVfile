@@ -11,9 +11,15 @@ namespace LabOWav
             
             Console.WriteLine("Enter output path (with file name and .wav) : ");
             var outputPath = Console.ReadLine();
+
+            Console.WriteLine("Enter in how many times you want to increase length of the track :");
+            var times = Convert.ToInt32(Console.ReadLine());
             
             WaveIO waveIo = new WaveIO(inputPath, outputPath);
+            Interpolation interpolation = new Interpolation();
             var b = waveIo.ReadByteStream();
+            var updatedData = interpolation.Execute(b.Data, times, b.NumChannels);
+            b.UpdateStream(updatedData);
             waveIo.WriteByteStream(b);
 
           
