@@ -1,0 +1,13 @@
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.exe
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.deps.json
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.runtimeconfig.json
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.runtimeconfig.dev.json
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.dll
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\bin\Debug\netcoreapp3.1\LabOWav.pdb
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.csprojAssemblyReference.cache
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.AssemblyInfoInputs.cache
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.AssemblyInfo.cs
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.csproj.CoreCompileInputs.cache
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.dll
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.pdb
+C:\Users\R2D2\Desktop\LabWAVfile\LabOWav\LabOWav\obj\Debug\netcoreapp3.1\LabOWav.genruntimeconfig.cache

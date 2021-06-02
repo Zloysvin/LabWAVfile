@@ -42,6 +42,8 @@ namespace LabOWav
         public void UpdateStream(byte[] newData)
         {
             Data = newData;
+            Subchunk2Size = newData.Length + 4 + 4;
+            ChunkSize = Operation.ReverseEndian(Operation.IntToByteArray(newData.Length + 36, 4));
         }
     }
 }
