@@ -67,7 +67,7 @@ namespace LabOWav
             writer.Write(Operation.ReverseEndian(Operation.IntToByteArray(byteStream.BlockAlign, 2)));
             writer.Write(Operation.ReverseEndian(Operation.IntToByteArray(byteStream.BitsPerSample, 2)));
             writer.Write(byteStream.Subchunk2ID);
-            writer.Write(byteStream.Subchunk2Size);
+            writer.Write(Operation.ReverseEndian(Operation.IntToByteArray(byteStream.Subchunk2Size, 4)));
             writer.Write(byteStream.Data);
         }
     }
