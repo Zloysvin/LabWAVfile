@@ -7,41 +7,77 @@ namespace LabOWav
 {
     public class Interpolation
     {
+        public byte[] Interpolate(byte[] data, double times)
+        {
+            var step = 1 / times;
+            var newCount = (int)Math.Round(data.Length / step);
+            var newData = new byte[newCount];
+
+            for (int i = 0; i < newCount-1; i++)
+            {
+                var xI = step * i;
+                int upLimit = 0;
+                upLimit = (int)Math.Round(xI, MidpointRounding.AwayFromZero);
+
+                if (upLimit == 0)
+                {
+                    newData[i] = data[upLimit];
+                    continue;
+                }
+
+                var downLimit = upLimit - 1;
+
+                newData[i] = InterpolateBetweenTwoPoints((float)xI, data[downLimit], data[upLimit]);
+            }
+
+            return newData;
+        }
+
+        byte InterpolateBetweenTwoPoints(float x, byte val1, byte val2)
+        {
+            var x1 = Math.Round(x, MidpointRounding.ToZero);
+            var x2 = Math.Round(x, MidpointRounding.AwayFromZero);
+            if(x!=x1)
+            {
+                var delta = val2 - val1;
+                var res = (byte) ((float) delta / (x2 - x1) * (x - x1) + val1);
+                return res;
+            }
+
+            return val2;
+        }
+
         public Byte[] Execute(byte[] data, double times, int channels)
         {
-            var dataConv = ConvertByteToInt(data);
-            double step = 1 / times; 
-            int[] dataUpdate;
+            byte[] dataUpdate;
             if (channels == 1)
             {
-                dataUpdate = CalculateInterpolation(dataConv, step);
+                dataUpdate = Interpolate(data, times);
             }
             else
             {
-                dataUpdate = InterpolateStereo(dataConv, step);
+                List<byte> firstChannel = new List<byte>();
+                List<byte> secondChannel = new List<byte>();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    if (i % 2 == 0)
+                        firstChannel.Add(data[i]);
+                    else
+                        secondChannel.Add(data[i]);
+                }
+
+                var firstChannelArr = firstChannel.ToArray();
+                var secondChannelArr = secondChannel.ToArray();
+                dataUpdate = MergeChannels(Interpolate(firstChannelArr, times), Interpolate(secondChannelArr, times));
             }
 
-            return ConvertIntToByte(dataUpdate);
+            return dataUpdate;
         }
-        private int[] InterpolateStereo(int[] data, double step)
-        {
-            List<int> firstChannel = new List<int>();
-            List<int> secondChannel = new List<int>();
-            for (int i = 0; i < data.Length; i++)
-            {
-                if(i%2 == 0)
-                    firstChannel.Add(data[i]);
-                else
-                    secondChannel.Add(data[i]);
-            }
 
-            int[] firstArray = CalculateInterpolation(firstChannel.ToArray(), step);
-            int[] secondArray = CalculateInterpolation(secondChannel.ToArray(), step);
-            return MergeChannels(firstArray, secondArray);
-        }
-        private int[] MergeChannels(int[] firstChannel, int[] secondChannel)
+
+        private byte[] MergeChannels(byte[] firstChannel, byte[] secondChannel)
         {
-            List<int> mergedChannels = new List<int>();
+            List<byte> mergedChannels = new List<byte>();
             for (int i = 0; i < firstChannel.Length; i++)
             {
                 mergedChannels.Add(firstChannel[i]);
@@ -49,85 +85,6 @@ namespace LabOWav
             }
 
             return mergedChannels.ToArray();
-        }
-        private int[] CalculateInterpolation(int[] data, double step)
-        {
-            double currentDistance = 0;
-            int currentZone = 1;
-            List<int> extendedData = new List<int>();
-            extendedData.Add(data[0]);
-            while (currentDistance < data.Length - 1)
-            {
-                if (currentDistance >= currentZone)
-                {
-                    currentZone++;
-                }
-                extendedData.Add(Interpolate(currentDistance, currentZone, data));
-
-                currentDistance += step;
-            }
-
-            return extendedData.ToArray();
-        }
-        private int Interpolate(double currentDistance, int currentZone, int[] dataConv)
-        {
-            return (int) ((currentDistance - currentZone + 1) * (dataConv[currentZone] - dataConv[currentZone - 1]) +
-                          dataConv[currentZone - 1]);
-        }
-        private int[] ConvertByteToInt(byte[] data)
-        {
-            List<int> dataList = new List<int>();
-            string hexValue = "";
-            int counter = 0;
-            for (int i = 0; i < data.Length; i++)
-            {
-                hexValue += data[i].ToString("X");
-                counter++;
-
-                if (counter == 2)
-                {
-                    int converted = Convert.ToInt32(hexValue, 16);
-                    if (converted > 32767)
-                        dataList.Add(converted - 65536);
-                    else
-                        dataList.Add(converted);
-                    
-                    counter = 0;
-                    hexValue = "";
-                }
-            }
-            return dataList.ToArray();
-        }
-        private byte[] ConvertIntToByte(int[] data)
-        {
-            List<byte> dataList = new List<byte>();
-            for (int i = 0; i < data.Length; i++)
-            {
-                string hexValue = data[i].ToString("X");
-                string hex1 = "00"; 
-                string hex2 = "00";
-                if (hexValue.Length > 2)
-                {
-                    hex1 = hexValue[0].ToString() + hexValue[1];
-                    if (hexValue.Length == 3)
-                    {
-                        hex2 = hexValue[2].ToString();
-                    }
-                    else if (hexValue.Length == 4)
-                    {
-                        hex2 = hexValue[2].ToString() + hexValue[3];
-                    }
-                }
-                else
-                {
-                    hex1 = hexValue;
-                    hex2 = "00";
-                }
-                dataList.Add(Convert.ToByte(Convert.ToInt32(hex1, 16)));
-                dataList.Add(Convert.ToByte(Convert.ToInt32(hex2, 16)));
-            }
-
-            return dataList.ToArray();
         }
     }
 }

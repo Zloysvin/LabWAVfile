@@ -13,7 +13,7 @@ namespace LabOWav
             var outputPath = Console.ReadLine();
 
             Console.WriteLine("Enter in how many times you want to increase length of the track :");
-            var times = Convert.ToInt32(Console.ReadLine());
+            var times = Convert.ToDouble(Console.ReadLine());
             
             WaveIO waveIo = new WaveIO(inputPath, outputPath);
             Interpolation interpolation = new Interpolation();
